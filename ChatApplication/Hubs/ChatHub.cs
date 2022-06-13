@@ -17,8 +17,8 @@ namespace ChatApplication.Hubs
         {
             UserModel newUser = new UserModel();
             _userDatabase.AddNewUser(Context.ConnectionId, newUser);
-            Clients.All.SendAsync("UserConnected", newUser);
-            Clients.Caller.SendAsync("UserConnectionAccpeted", newUser);
+            Clients.AllExcept(Context.ConnectionId).SendAsync("UserConnected", newUser);
+            Clients.Caller.SendAsync("UserConnectionAccepted", newUser);
             Clients.Caller.SendAsync("UserList", _userDatabase.GetUserListInList());
             return base.OnConnectedAsync();
         }
